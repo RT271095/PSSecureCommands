@@ -100,28 +100,4 @@ Function Import-SecureCommands {
 	return $global:scmd
 
 }
-<#
-	.SYNOPSIS
-	To import all ps1 script from a folder into $global:SPS
-	
-	.EXAMPLE
-	Add-SPSFolder -Group folder -Path "C:\path\to\folder" -License "SomeLicenseName"
-#>
-Function Add-SPSFolder {
-	param(
-	[Parameter(Position=0,mandatory=$true)]
-	[String]$Group,
-	[Parameter(Position=1,mandatory=$true)]
-	[String]$Path,
-	[Parameter(Position=2,mandatory=$true)]
-	[String]$License
-	)
-	
-	$list = (get-childitem "$Path" -Recurse -File | where {$_.Name -match ".ps1"}).FullName.replace("$Path","")
-	foreach($elem in $list){
-		$c = get-content "$($Path)/$($elem)" -Raw
-		Add-SPSCommand -Group "$Group" -name "$elem" -License "$License" -command @"
-$c
-"@
-	}
-}
+
